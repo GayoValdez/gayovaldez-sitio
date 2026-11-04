@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Figtree:wght@400;500;600&display=swap">
+<title>Autorización · Estudio Gayo</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<nav class="wrap" aria-label="Principal"><a class="brand" href="../">GAYO VALDEZ</a></nav>
+<main class="wrap">
+<h1>Autorización completada</h1>
+<p id="ok" hidden>Tu cuenta quedó autorizada para <b>Estudio Gayo</b>, la herramienta privada de Gayo Valdez para publicar y analizar sus propios videos. Ya puedes cerrar esta ventana y volver al programa.</p>
+<p id="no" hidden>No se recibió ninguna autorización. Cierra esta ventana y vuelve a intentarlo desde el programa.</p>
+<p class="small">Estudio Gayo no está disponible para otros usuarios. <a href="../privacidad/">Privacidad</a> · <a href="../terminos/">Condiciones</a></p>
+</main>
+<script>
+var p = new URLSearchParams(location.search);
+document.getElementById(p.get("code") ? "ok" : "no").hidden = false;
+</script>
+</body>
+</html>
