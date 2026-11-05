@@ -628,6 +628,25 @@
   @media (max-width:640px){.cover .btnrow{grid-template-columns:repeat(3,1fr);gap:9px}.cover .btnrow .btn{padding:10px 4px !important;font-size:14px !important}}
   .cover .btnrow .btn.sub{grid-column:auto !important;width:auto !important;flex:none !important}
   @media (max-width:640px){.cover .btnrow .btn{width:100% !important;box-sizing:border-box}}
+  @media (max-width:640px){
+    .cover{justify-content:space-evenly !important;gap:18px !important}
+    .cover .toprow{gap:12px}.cover .stickwrap{gap:10px}
+    .cover .title .huge{line-height:.92 !important}
+    .cover .lead{line-height:1.4 !important}
+    .cover .botrow{gap:20px !important}
+    .cover .btnrow{gap:12px !important}
+    .cover .btnrow .btn{padding:12px 4px !important}
+  }
+  @media (max-width:640px) and (max-height:700px){
+    .cover{gap:12px !important}.cover .title .huge{font-size:18vw !important}.cover-logo{width:20vw !important}.cover .botrow{gap:14px !important}
+  }
+  @media (max-width:640px){.marquee{flex:none !important}.menu-btn{white-space:nowrap}.cover .btnrow{min-width:0}.cover .btnrow .btn{min-width:0;overflow:hidden;text-overflow:ellipsis}}
+  @media (max-width:380px){
+    .menu-btn{font-size:17px !important;padding:6px 10px 4px !important}
+    .cover .btnrow{gap:8px !important}.cover .btnrow .btn{font-size:12px !important;padding:11px 2px !important;letter-spacing:0}
+    .cover .lead{font-size:16px !important}.sticker{font-size:14px !important;padding:4px 9px !important}.cover .kicker{font-size:14px !important}
+  }
+  @media (max-width:440px) and (min-width:381px){.cover .btnrow{gap:9px !important}.cover .btnrow .btn{font-size:13px !important;padding:12px 2px !important;letter-spacing:0}}
 </style>
 </head>
 <body>
