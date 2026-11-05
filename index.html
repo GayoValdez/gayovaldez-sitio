@@ -469,6 +469,14 @@
   .nav-list li a .ix{font-family:var(--font-pixel);font-size:clamp(17px,1.9vw,24px);color:var(--orange);min-width:2.4em}
   .nav-list li a:hover{color:var(--lime);transform:translateX(14px)}
   .nav-list li a:hover .ix{color:var(--lime)}
+  .nav-list .fold-btn{display:flex;align-items:baseline;gap:16px;width:100%;text-align:left;background:none;border:0;cursor:pointer;font-family:var(--font-display);font-size:clamp(22px,3.6vw,42px);text-transform:uppercase;line-height:1.02;color:var(--white);padding:4px 0;transition:color .15s}
+  .nav-list .fold-btn .ix{font-family:var(--font-pixel);font-size:clamp(17px,1.9vw,24px);color:var(--orange);min-width:2.4em}
+  .nav-list .fold-btn .car{margin-left:auto;font-style:normal;color:var(--orange);font-family:var(--font-pixel);transition:transform .25s}
+  .nav-list .fold-btn:hover{color:var(--lime)}
+  .nav-list .fold-btn[aria-expanded=true] .car{transform:rotate(45deg)}
+  .nav-list .fold-list{list-style:none;margin:2px 0 6px;padding:0 0 0 18px;border-left:3px solid var(--orange);display:none}
+  .nav-list .fold-list.open{display:block}
+  .nav-list .fold-list li a{font-size:clamp(18px,2.8vw,32px)}
   .nav-foot{
     margin-top:auto;padding-top:16px;border-top:3px solid var(--orange);
     font-family:var(--font-pixel);font-size:18px;letter-spacing:1px;color:rgba(255,255,255,.7);
@@ -947,15 +955,20 @@
     <button class="x" id="navClose" aria-label="Cerrar menú">CERRAR &#10005;</button>
   </div>
   <ul class="nav-list">
-    <li><a href="#" data-goto="0"><span class="ix">01</span>Portada</a></li>
-    <li><a href="#" data-goto="1"><span class="ix">02</span>Quién soy</a></li>
-    <li><a href="#" data-goto="2"><span class="ix">03</span>La música</a></li>
-    <li><a href="#" data-goto="3"><span class="ix">04</span>Números</a></li>
-    <li><a href="#" data-goto="4"><span class="ix">05</span>En mis palabras</a></li>
-    <li><a href="#" data-goto="5"><span class="ix">06</span>Mis redes</a></li>
-    <li><a href="#" data-goto="6"><span class="ix">07</span>Logo y colores</a></li>
-    <li><a href="#" data-goto="7"><span class="ix">08</span>Contacto</a></li>
-    <li><a href="#" data-goto="8"><span class="ix">09</span>Próximamente</a></li>
+    <li class="fold">
+      <button type="button" class="fold-btn" id="foldBtn" aria-expanded="false" aria-controls="foldList"><span class="ix">01–09</span>Secciones<i class="car" aria-hidden="true">+</i></button>
+      <ul class="fold-list" id="foldList">
+        <li><a href="#" data-goto="0"><span class="ix">01</span>Portada</a></li>
+        <li><a href="#" data-goto="1"><span class="ix">02</span>Quién soy</a></li>
+        <li><a href="#" data-goto="2"><span class="ix">03</span>La música</a></li>
+        <li><a href="#" data-goto="3"><span class="ix">04</span>Números</a></li>
+        <li><a href="#" data-goto="4"><span class="ix">05</span>En mis palabras</a></li>
+        <li><a href="#" data-goto="5"><span class="ix">06</span>Mis redes</a></li>
+        <li><a href="#" data-goto="6"><span class="ix">07</span>Logo y colores</a></li>
+        <li><a href="#" data-goto="7"><span class="ix">08</span>Contacto</a></li>
+        <li><a href="#" data-goto="8"><span class="ix">09</span>Próximamente</a></li>
+      </ul>
+    </li>
     <li><a href="albumes/"><span class="ix">●</span>Álbumes</a></li>
     <li><a href="galeria/"><span class="ix">▶</span>Galería</a></li>
     <li><a href="fotos/"><span class="ix">◼</span>Fotos</a></li>
@@ -1219,6 +1232,10 @@
   if (document.fonts && document.fonts.ready){ document.fonts.ready.then(fillMarquees); }
   window.addEventListener("resize", debounce(fillMarquees, 200));
 })();
+</script>
+<script>
+(function(){var b=document.getElementById("foldBtn"),l=document.getElementById("foldList");if(!b||!l)return;
+b.addEventListener("click",function(){var o=!l.classList.contains("open");l.classList.toggle("open",o);b.setAttribute("aria-expanded",o)});})();
 </script>
 </body>
 </html>

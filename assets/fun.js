@@ -4,17 +4,8 @@
   /* ====== EDITA AQUÍ ====== */
   // Cuenta regresiva: deja fecha vacía para ocultarla. Ejemplo: "2026-12-01T00:00:00-06:00"
   var RELEASE = { nombre: "", fecha: "" };
-  // Frases del botón "Frase". Cámbialas por líneas de tus canciones.
-  var FRASES = [
-    "Hijo de la melancolía.",
-    "A veces la lluvia también canta.",
-    "Lo que duele, se vuelve canción.",
-    "Hoy toca sentirlo todo.",
-    "Un lofi para los que se quedaron despiertos.",
-    "Escribir es la forma más bonita de llorar.",
-    "No todo lo triste es malo.",
-    "Amarillo por fuera, azul por dentro."
-  ];
+  // Frases del botón ✦. Escribe aquí tus frases entre comillas, separadas por coma. Vacío = el botón no aparece.
+  var FRASES = [];
   var DICHOS = ["¡Hola!", "¿Ya escuchaste Amarilla?", "Hijo de la melancolía", "💔", "Dale play ▶", "Weise Kinder"];
   /* ========================= */
 
@@ -143,7 +134,7 @@
   }
   bN.onclick = function (e) { e.stopPropagation(); setNight(!night, true); };
   var tint = doc.createElement("div"); tint.className = "gvn-tint";
-  doc.body.appendChild(tint); doc.body.appendChild(bF); doc.body.appendChild(bN);
+  doc.body.appendChild(tint); if (FRASES.length) doc.body.appendChild(bF); doc.body.appendChild(bN);
   setNight(store("gv-night") === "1", false);
 
   /* ---------- personaje (logo) que te mira y reacciona ---------- */
