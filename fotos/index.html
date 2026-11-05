@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<script src="../assets/player.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&display=swap">
+<title>Fotos · Gayo Valdez</title>
+<link rel="icon" href="../assets/favicon.png">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<nav class="wrap" aria-label="Principal"><a class="brand" href="../"><img src="../assets/logo-gayo.jpg" alt="" width="36" height="36"> GAYO VALDEZ</a><div class="links"><a href="../albumes/">Álbumes</a><a href="../galeria/">Galería</a><a href="../fotos/">Fotos</a><a href="../">Inicio</a></div></nav>
+<main class="wrap gx">
+  <h1>Fotos</h1>
+  <p class="lead">Mis fotos favoritas.</p>
+  <div id="ph" class="pgrid"></div>
+  <p class="muted" id="empty" hidden>Estoy subiendo las primeras fotos. Vuelve pronto.</p>
+</main>
+<div id="lb" class="lb" hidden><button class="x" id="lbx" aria-label="Cerrar">✕</button><button class="nv p" id="lbp" aria-label="Anterior">‹</button><button class="nv n" id="lbn" aria-label="Siguiente">›</button><div class="stage ph" id="stage"></div></div>
+<footer class="wrap"><span>© 2026 Gayo Valdez · Puebla, México</span><nav aria-label="Legal"><a href="../privacidad/">Privacidad</a><a href="../terminos/">Condiciones</a></nav></footer>
+
+<script src="fotos.js"></script>
+<script>
+(function(){
+  var P=window.FOTOS||[],cur=0,$=function(i){return document.getElementById(i)};
+  var g=$("ph");$("empty").hidden=P.length>0;
+  P.forEach(function(p,i){var b=document.createElement("button");b.type="button";b.className="p";
+    var m=document.createElement("img");m.loading="lazy";m.alt=p.c||"Foto de Gayo Valdez";m.src=p.t;m.width=p.w;m.height=p.h;
+    b.appendChild(m);b.onclick=function(){show(i)};g.appendChild(b)});
+  function show(i){cur=(i+P.length)%P.length;var s=$("stage");s.textContent="";var m=document.createElement("img");m.src=P[cur].f;m.alt=P[cur].c||"";s.appendChild(m);
+    if(P[cur].c){var c=document.createElement("p");c.textContent=P[cur].c;s.appendChild(c)}$("lb").hidden=false;document.body.style.overflow="hidden"}
+  function closeP(){$("lb").hidden=true;document.body.style.overflow=""}
+  $("lbx").onclick=closeP;$("lbp").onclick=function(){show(cur-1)};$("lbn").onclick=function(){show(cur+1)};
+  $("lb").onclick=function(e){if(e.target===$("lb")||e.target===$("stage"))closeP()};
+  document.addEventListener("keydown",function(e){if($("lb").hidden)return;if(e.key==="Escape")closeP();if(e.key==="ArrowLeft")show(cur-1);if(e.key==="ArrowRight")show(cur+1)});
+  var x0=null;$("lb").addEventListener("touchstart",function(e){x0=e.touches[0].clientX},{passive:true});
+  $("lb").addEventListener("touchend",function(e){if(x0===null)return;var d=e.changedTouches[0].clientX-x0;if(Math.abs(d)>50)show(cur+(d<0?1:-1));x0=null});
+})();
+</script>
+</body></html>

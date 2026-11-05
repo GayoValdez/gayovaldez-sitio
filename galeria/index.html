@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<script src="../assets/player.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&display=swap">
+<title>Galería · Gayo Valdez</title>
+<link rel="icon" href="../assets/favicon.png">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<nav class="wrap" aria-label="Principal"><a class="brand" href="../"><img src="../assets/logo-gayo.jpg" alt="" width="36" height="36"> GAYO VALDEZ</a><div class="links"><a href="../albumes/">Álbumes</a><a href="../galeria/">Galería</a><a href="../fotos/">Fotos</a><a href="../">Inicio</a></div></nav>
+<main class="wrap gx">
+  <h1>Galería</h1>
+  <p class="lead">Todos mis videos de YouTube. Toca uno para verlo aquí.</p>
+  <div class="bar">
+    <div class="chips" id="kind"><button class="on" data-k="">Todos</button><button data-k="V">Videos</button><button data-k="S">Shorts</button></div>
+    <div class="chips" id="ord"><button class="on" data-o="new">Recientes</button><button data-o="top">Más vistos</button></div>
+    <a class="yt" href="https://www.youtube.com/@gayovaldez?sub_confirmation=1" target="_blank" rel="noopener">Suscribirme en YouTube</a>
+  </div>
+  <div id="gv" class="vgrid"></div>
+  <button id="more" class="more" hidden>Ver más</button>
+</main>
+<div id="lb" class="lb" hidden><button class="x" id="lbx" aria-label="Cerrar">✕</button><div class="stage" id="stage"></div><a id="lbl" class="yt" target="_blank" rel="noopener">Ver en YouTube</a></div>
+<footer class="wrap"><span>© 2026 Gayo Valdez · Puebla, México</span><nav aria-label="Legal"><a href="../privacidad/">Privacidad</a><a href="../terminos/">Condiciones</a></nav></footer>
+
+<script src="videos.js"></script>
+<script>
+(function(){
+  var V=window.VIDEOS||[],kind="",ord="new",shown=0,PER=24,$=function(i){return document.getElementById(i)};
+  function list(){var a=V.filter(function(v){return !kind||v.k===kind});a.sort(function(x,y){return ord==="top"?y.v-x.v:y.ts-x.ts});return a}
+  function fmt(n){return n>=1e6?(n/1e6).toFixed(1)+" M":n>=1e3?(n/1e3).toFixed(n>=1e4?0:1)+" mil":String(n)}
+  function draw(reset){
+    var a=list(),g=$("gv"); if(reset){g.textContent="";shown=0}
+    a.slice(shown,shown+PER).forEach(function(v){
+      var b=document.createElement("button");b.className="v"+(v.k==="S"?" s":"");b.type="button";
+      var i=document.createElement("img");i.loading="lazy";i.alt="";i.src="https://i.ytimg.com/vi/"+v.id+"/hqdefault.jpg";
+      var t=document.createElement("b");t.textContent=v.t||"Sin título";
+      var m=document.createElement("small");m.textContent=(v.k==="S"?"Short":"Video")+" · "+fmt(v.v)+" vistas";
+      b.append(i,t,m);b.onclick=function(){openV(v)};g.appendChild(b);
+    });
+    shown=Math.min(a.length,shown+PER);$("more").hidden=shown>=a.length;
+  }
+  function openV(v){
+    var s=$("stage");s.className="stage"+(v.k==="S"?" short":"");s.textContent="";
+    var f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+v.id+"?autoplay=1&rel=0";
+    f.allow="autoplay; encrypted-media; picture-in-picture";f.allowFullscreen=true;f.title=v.t;s.appendChild(f);
+    $("lbl").href="https://www.youtube.com/watch?v="+v.id;$("lb").hidden=false;document.body.style.overflow="hidden";
+  }
+  function closeV(){$("lb").hidden=true;$("stage").textContent="";document.body.style.overflow=""}
+  $("lbx").onclick=closeV;$("lb").onclick=function(e){if(e.target===$("lb"))closeV()};
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")closeV()});
+  function chips(id,fn){$(id).onclick=function(e){var b=e.target.closest("button");if(!b)return;[].forEach.call($(id).children,function(x){x.classList.remove("on")});b.classList.add("on");fn(b);draw(true)}}
+  chips("kind",function(b){kind=b.dataset.k});chips("ord",function(b){ord=b.dataset.o});
+  $("more").onclick=function(){draw(false)};draw(true);
+})();
+</script>
+</body></html>
