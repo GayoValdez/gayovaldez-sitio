@@ -51,11 +51,25 @@
   document.body.appendChild(bar);
   var q = function (s) { return bar.querySelector(s); };
 
-  var playing = false, stopped = false, ready = false;
+  var playing = false, stopped = false, ready = false, curTitle = "", curUri = "";
+  function label() { q("#gvpLb").textContent = playing ? (curTitle || "Gayo Valdez") : "Toca para escuchar"; }
   function ui(on) {
     playing = on; bar.classList.toggle("go", on);
     q("#gvpPlay").classList.toggle("on", on);
-    q("#gvpLb").textContent = on ? "This Is Gayo Valdez" : "Toca para escuchar";
+    label();
+  }
+  // nombre de la canción que suena (Spotify avisa el URI; el nombre sale de su oEmbed)
+  var titles = {};
+  function track(uri) {
+    if (!/^spotify:track:[A-Za-z0-9]+$/.test(uri || "") || uri === curUri) return;
+    curUri = uri;
+    if (titles[uri]) { curTitle = titles[uri]; label(); return; }
+    curTitle = ""; label();
+    try {
+      fetch("https://open.spotify.com/oembed?url=" + encodeURIComponent(uri)).then(function (r) { return r.json(); }).then(function (j) {
+        if (j && j.title) { titles[uri] = j.title; if (curUri === uri) { curTitle = j.title; label(); } }
+      }).catch(function () {});
+    } catch (er) {}
   }
   // Reproductor de Spotify (oculto): se controla por mensajes
   var sp = document.createElement("iframe");
@@ -81,7 +95,7 @@
     var d = e.data; if (!d) return;
     if (e.source === sp.contentWindow) {
       if (d.type === "ready") { ready = true; if (!stopped) play(); }
-      else if (d.type === "playback_update" && d.payload) ui(!d.payload.isPaused);
+      else if (d.type === "playback_update" && d.payload) { track(d.payload.playingURI); ui(!d.payload.isPaused); }
       return;
     }
     if (!d.gv) return;

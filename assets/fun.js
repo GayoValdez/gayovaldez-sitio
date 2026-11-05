@@ -129,13 +129,13 @@
   var tTimer = 0;
   function toast(msg, again) {
     tEl.textContent = msg;
-    if (again) { var b = doc.createElement("button"); b.type = "button"; b.textContent = "Otra"; b.onclick = function () { frase(true); }; tEl.appendChild(b); }
-    tEl.classList.add("on"); clearTimeout(tTimer); tTimer = setTimeout(function () { tEl.classList.remove("on"); }, again ? 9000 : 3500);
+    if (again) { var b = doc.createElement("button"); b.type = "button"; b.textContent = "Otra"; b.onclick = function (e) { e.stopPropagation(); frase(); }; tEl.appendChild(b); }
+    tEl.classList.add("on"); clearTimeout(tTimer); tTimer = setTimeout(function () { tEl.classList.remove("on"); }, again ? 12000 : 3500);
   }
   var fi = -1;
   function frase() { var n; do { n = (Math.random() * FRASES.length) | 0; } while (n === fi && FRASES.length > 1); fi = n; toast("“" + FRASES[n] + "”", true); }
   var bF = doc.createElement("button"); bF.id = "gvFrase"; bF.className = "gv-fab"; bF.type = "button"; bF.textContent = "✦"; bF.title = "Frase aleatoria"; bF.setAttribute("aria-label", "Frase aleatoria");
-  bF.onclick = function (e) { e.stopPropagation(); frase(); };
+  bF.onclick = function (e) { e.stopPropagation(); if (tEl.classList.contains("on")) { clearTimeout(tTimer); tEl.classList.remove("on"); } else frase(); };
   var bN = doc.createElement("button"); bN.id = "gvNight"; bN.className = "gv-fab"; bN.type = "button"; bN.setAttribute("aria-label", "Modo noche triste");
   function setNight(on, save) {
     night = on; root.classList.toggle("gv-night", on); bN.textContent = "☾"; bN.title = on ? "Noche triste: activada" : "Noche triste";
