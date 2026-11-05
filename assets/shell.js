@@ -32,7 +32,7 @@
 
   var live = document.createElement("div");
   live.className = "gvl";
-  live.innerHTML = '<i></i><span>Personas escuchando en este momento:</span><b id="gvlN">0</b>';
+  live.innerHTML = '<i></i><span>Personas escuchando en Spotify en este momento:</span><b id="gvlN">0</b>';
   document.body.appendChild(live);
   var gBase = 50, gLast = -1, gT = 0;
   function tick(){
