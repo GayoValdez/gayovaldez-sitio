@@ -13,9 +13,11 @@
 <body>
 <nav class="wrap" aria-label="Principal"><a class="brand" href="../"><img src="../assets/logo-gayo.jpg" alt="" width="36" height="36"> GAYO VALDEZ</a><div class="links"><a href="../albumes/">Álbumes</a><a href="../galeria/">Galería</a><a href="../fotos/">Fotos</a><a href="../">Inicio</a></div></nav>
 <main class="wrap gx">
-  <h1>Fotos</h1>
-  <p class="lead">Mis fotos favoritas.</p>
-  <div id="ph" class="pgrid"></div>
+  <h1 id="ft">Fotos</h1>
+  <p class="lead" id="fl">Mis álbumes de fotos. Toca uno para verlo.</p>
+  <a class="back" id="fb" href="#" hidden>← Todos los álbumes</a>
+  <div id="albs" class="agrid"></div>
+  <div id="ph" class="pgrid" hidden></div>
   <p class="muted" id="empty" hidden>Estoy subiendo las primeras fotos. Vuelve pronto.</p>
 </main>
 <div id="lb" class="lb" hidden><button class="x" id="lbx" aria-label="Cerrar">✕</button><button class="nv p" id="lbp" aria-label="Anterior">‹</button><button class="nv n" id="lbn" aria-label="Siguiente">›</button><div class="stage ph" id="stage"></div></div>
@@ -24,19 +26,39 @@
 <script src="fotos.js"></script>
 <script>
 (function(){
-  var P=window.FOTOS||[],cur=0,$=function(i){return document.getElementById(i)};
-  var g=$("ph");$("empty").hidden=P.length>0;
-  P.forEach(function(p,i){var b=document.createElement("button");b.type="button";b.className="p";
-    var m=document.createElement("img");m.loading="lazy";m.alt=p.c||"Foto de Gayo Valdez";m.src=p.t;m.width=p.w;m.height=p.h;
-    b.appendChild(m);b.onclick=function(){show(i)};g.appendChild(b)});
-  function show(i){cur=(i+P.length)%P.length;var s=$("stage");s.textContent="";var m=document.createElement("img");m.src=P[cur].f;m.alt=P[cur].c||"";s.appendChild(m);
-    if(P[cur].c){var c=document.createElement("p");c.textContent=P[cur].c;s.appendChild(c)}$("lb").hidden=false;document.body.style.overflow="hidden"}
+  var A=window.FOTOS||[],cur=null,idx=0,$=function(i){return document.getElementById(i)};
+  var T0=document.title;
+  function esc(s){return String(s)}
+  function home(){
+    cur=null;$("ph").hidden=true;$("albs").hidden=false;$("fb").hidden=true;$("ft").textContent="Fotos";$("fl").hidden=false;document.title=T0;
+    $("empty").hidden=A.length>0;
+    if($("albs").children.length) return;
+    A.forEach(function(al){
+      var a=document.createElement("a");a.className="al";a.href="#"+al.s;
+      var i=document.createElement("img");i.loading="lazy";i.alt="Portada de "+al.n;i.src="img/"+al.c;
+      var b=document.createElement("b");b.textContent=al.n;var s=document.createElement("small");s.textContent=al.p.length+(al.p.length===1?" foto":" fotos");
+      a.append(i,b,s);$("albs").appendChild(a);
+    });
+  }
+  function open(slug){
+    var al=A.filter(function(x){return x.s===slug})[0]; if(!al) return home();
+    cur=al;$("albs").hidden=true;$("fl").hidden=true;$("fb").hidden=false;$("ft").textContent=al.n;document.title=al.n+" · Fotos · Gayo Valdez";
+    var g=$("ph");g.textContent="";g.hidden=false;
+    al.p.forEach(function(p,i){var b=document.createElement("button");b.type="button";b.className="p";
+      var m=document.createElement("img");m.loading="lazy";m.alt=al.n;m.src="img/"+p.f;m.width=p.w;m.height=p.h;
+      b.appendChild(m);b.onclick=function(){show(i)};g.appendChild(b)});
+    scrollTo(0,0);
+  }
+  function route(){var h=location.hash.replace("#","");h?open(h):home()}
+  addEventListener("hashchange",route);route();
+  function show(i){var P=cur.p;idx=(i+P.length)%P.length;var s=$("stage");s.textContent="";var m=document.createElement("img");m.src="img/"+P[idx].f;m.alt=cur.n;s.appendChild(m);
+    var c=document.createElement("p");c.textContent=cur.n+" · "+(idx+1)+"/"+P.length;s.appendChild(c);$("lb").hidden=false;document.body.style.overflow="hidden"}
   function closeP(){$("lb").hidden=true;document.body.style.overflow=""}
-  $("lbx").onclick=closeP;$("lbp").onclick=function(){show(cur-1)};$("lbn").onclick=function(){show(cur+1)};
+  $("lbx").onclick=closeP;$("lbp").onclick=function(){show(idx-1)};$("lbn").onclick=function(){show(idx+1)};
   $("lb").onclick=function(e){if(e.target===$("lb")||e.target===$("stage"))closeP()};
-  document.addEventListener("keydown",function(e){if($("lb").hidden)return;if(e.key==="Escape")closeP();if(e.key==="ArrowLeft")show(cur-1);if(e.key==="ArrowRight")show(cur+1)});
+  document.addEventListener("keydown",function(e){if($("lb").hidden)return;if(e.key==="Escape")closeP();if(e.key==="ArrowLeft")show(idx-1);if(e.key==="ArrowRight")show(idx+1)});
   var x0=null;$("lb").addEventListener("touchstart",function(e){x0=e.touches[0].clientX},{passive:true});
-  $("lb").addEventListener("touchend",function(e){if(x0===null)return;var d=e.changedTouches[0].clientX-x0;if(Math.abs(d)>50)show(cur+(d<0?1:-1));x0=null});
+  $("lb").addEventListener("touchend",function(e){if(x0===null)return;var d=e.changedTouches[0].clientX-x0;if(Math.abs(d)>50)show(idx+(d<0?1:-1));x0=null});
 })();
 </script>
 </body></html>

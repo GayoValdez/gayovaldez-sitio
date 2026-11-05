@@ -14,9 +14,8 @@
 <nav class="wrap" aria-label="Principal"><a class="brand" href="../"><img src="../assets/logo-gayo.jpg" alt="" width="36" height="36"> GAYO VALDEZ</a><div class="links"><a href="../albumes/">Álbumes</a><a href="../galeria/">Galería</a><a href="../fotos/">Fotos</a><a href="../">Inicio</a></div></nav>
 <main class="wrap gx">
   <h1>Galería</h1>
-  <p class="lead">Todos mis videos de YouTube. Toca uno para verlo aquí.</p>
+  <p class="lead">Mis videos oficiales. Toca uno para verlo aquí.</p>
   <div class="bar">
-    <div class="chips" id="kind"><button class="on" data-k="">Todos</button><button data-k="V">Videos</button><button data-k="S">Shorts</button></div>
     <div class="chips" id="ord"><button class="on" data-o="new">Recientes</button><button data-o="top">Más vistos</button></div>
     <a class="yt" href="https://www.youtube.com/@gayovaldez?sub_confirmation=1" target="_blank" rel="noopener">Suscribirme en YouTube</a>
   </div>
@@ -29,7 +28,7 @@
 <script src="videos.js"></script>
 <script>
 (function(){
-  var V=window.VIDEOS||[],kind="",ord="new",shown=0,PER=24,$=function(i){return document.getElementById(i)};
+  var V=(window.VIDEOS||[]).filter(function(v){return v.k==="V"}),kind="",ord="new",shown=0,PER=24,$=function(i){return document.getElementById(i)};
   function list(){var a=V.filter(function(v){return !kind||v.k===kind});a.sort(function(x,y){return ord==="top"?y.v-x.v:y.ts-x.ts});return a}
   function fmt(n){return n>=1e6?(n/1e6).toFixed(1)+" M":n>=1e3?(n/1e3).toFixed(n>=1e4?0:1)+" mil":String(n)}
   function draw(reset){
@@ -53,7 +52,7 @@
   $("lbx").onclick=closeV;$("lb").onclick=function(e){if(e.target===$("lb"))closeV()};
   document.addEventListener("keydown",function(e){if(e.key==="Escape")closeV()});
   function chips(id,fn){$(id).onclick=function(e){var b=e.target.closest("button");if(!b)return;[].forEach.call($(id).children,function(x){x.classList.remove("on")});b.classList.add("on");fn(b);draw(true)}}
-  chips("kind",function(b){kind=b.dataset.k});chips("ord",function(b){ord=b.dataset.o});
+  chips("ord",function(b){ord=b.dataset.o});
   $("more").onclick=function(){draw(false)};draw(true);
 })();
 </script>

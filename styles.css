@@ -72,3 +72,5 @@ footer a{text-decoration:none}footer a:hover{color:var(--yellow)}
 .al img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;display:block;background:var(--surface)}
 .al b{font:400 22px/1.1 var(--display);text-transform:uppercase;color:var(--yellow);padding:4px 8px 0}.al small{color:var(--muted);padding:0 8px}
 @media (max-width:600px){.agrid{grid-template-columns:repeat(2,1fr);gap:12px}.al b{font-size:18px}}
+.back{display:inline-block;margin:0 0 16px;font:700 15px var(--body);color:var(--yellow);text-decoration:none;border-bottom:2px solid var(--yellow)}.back:hover{color:var(--blue);border-color:var(--blue)}
+.gx .agrid .al img{aspect-ratio:4/3}
