@@ -264,7 +264,7 @@
     display:inline-block;white-space:nowrap;
     font-family:var(--font-display);font-size:clamp(22px,3.2vw,38px);
     letter-spacing:1px;text-transform:uppercase;
-    animation:scroll 22s linear infinite;will-change:transform;
+    animation:scroll 16s linear infinite;will-change:transform;
   }
   .marquee.rtl .track{animation-direction:reverse}
   .marquee .track span{padding:0 .35em}
@@ -505,9 +505,8 @@
 
   /* REDUCED MOTION */
   @media (prefers-reduced-motion:reduce){
-    *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
-    .marquee .track{animation:none;transform:none}
-    .spin{animation:none}
+    .spin,.cover-logo,.sticker,.floatstar{animation:none !important}
+    .shot,.stat,.rel-row,.tour-row,.promo,.quote,.cc,.btn,.tag{transition:none !important}
     [data-reveal]{opacity:1;transform:none}
     .slide,.slide.active,.slide.leaving{transition-delay:0s !important;transition-duration:.001ms !important}
   }
@@ -531,6 +530,77 @@
   .legal-links a:hover{color:var(--orange)}
   .soon{cursor:default}
   .soon:hover{transform:none;box-shadow:none}
+
+  /* ===== animaciones ===== */
+  a.rel-row{color:inherit;text-decoration:none;position:relative;overflow:hidden;transition:padding-left .25s,color .25s,background .25s}
+  a.rel-row:hover{background:var(--orange);color:var(--ink);padding-left:22px;padding-right:12px}
+  a.rel-row:hover .yr,a.rel-row:hover .ty{color:var(--ink)}
+  .rel-row .go{font-style:normal;margin-left:10px;opacity:0;transform:translate(-8px,8px);transition:.25s;font-family:var(--font-display)}
+  a.rel-row:hover .go{opacity:1;transform:none}
+  a.stat{text-decoration:none;position:relative;transition:transform .25s cubic-bezier(.3,1.6,.5,1),background .2s,color .2s}
+  a.stat:hover{transform:translateY(-8px) rotate(-1.5deg) scale(1.04);z-index:2;box-shadow:6px 6px 0 var(--orange)}
+  a.stat::after{content:"↗";position:absolute;top:8px;right:10px;font-family:var(--font-display);opacity:.5;transition:.25s}
+  a.stat:hover::after{opacity:1;transform:translate(3px,-3px)}
+  .btn{transition:transform .2s cubic-bezier(.3,1.6,.5,1),box-shadow .2s,background .2s,color .2s}
+  .btn:hover{transform:translate(-3px,-3px) rotate(-1deg);box-shadow:5px 5px 0 var(--blue)}
+  .btn:active{transform:translate(1px,1px);box-shadow:none}
+  .btn.sub{background:var(--orange);color:var(--ink);border-color:var(--orange);animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(254,192,9,.55)}50%{box-shadow:0 0 0 12px rgba(254,192,9,0)}}
+  .s-orange .btn.sub{background:var(--ink);color:var(--orange);border-color:var(--ink);animation:none}
+  .tag{transition:transform .2s cubic-bezier(.3,1.6,.5,1),background .2s,color .2s}
+  .tag:hover{transform:translateY(-4px) rotate(-3deg);background:var(--orange);color:var(--ink)}
+  .meta-card,.quote,.cc{transition:transform .25s cubic-bezier(.3,1.6,.5,1),box-shadow .25s}
+  .meta-card:hover,.quote:hover,.cc:hover{transform:translate(-5px,-5px) rotate(-.8deg);box-shadow:7px 7px 0 var(--blue)}
+  .cc:hover{box-shadow:7px 7px 0 var(--orange)}
+  a.tour-row{transition:padding-left .25s,background .25s,color .25s}
+  a.tour-row:hover{padding-left:20px;background:rgba(254,192,9,.12)}
+  a.tour-row:hover .status{background:var(--orange);color:var(--ink)}
+  a.promo{text-decoration:none;color:inherit}
+  .shot{transition:transform .3s cubic-bezier(.3,1.6,.5,1),filter .3s}
+  .shot:hover{transform:translateY(-8px) rotate(-2deg) scale(1.03)}
+  .cover-logo{animation:floaty 4s ease-in-out infinite;transition:transform .3s}
+  .cover-logo:hover{animation-play-state:paused;transform:rotate(-8deg) scale(1.12)}
+  @keyframes floaty{0%,100%{transform:rotate(3deg) translateY(0)}50%{transform:rotate(-2deg) translateY(-12px)}}
+  .sticker{animation:wiggle 3s ease-in-out infinite}
+  .sticker:nth-child(2){animation-delay:-1.2s}
+  @keyframes wiggle{0%,100%{rotate:-2deg}50%{rotate:3deg}}
+  .cover .title .huge{transition:letter-spacing .4s,transform .4s;cursor:default}
+  .cover .title .huge:hover{letter-spacing:3px;transform:skewX(-6deg)}
+  .mark{transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+  .mark:hover{transform:scale(1.06) rotate(-2deg)}
+  .mark-logo{transition:transform .5s}
+  .mark:hover .mark-logo{transform:rotate(360deg)}
+  .stat .n{display:inline-block;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+  a.stat:hover .n{transform:scale(1.12)}
+
+  /* ===== MÓVIL: aprovechar toda la pantalla ===== */
+  @media (max-width:640px){
+    .slide[data-slide="0"] .wrap{margin:0;flex:1;display:flex}
+    .cover{flex:1;justify-content:space-between;gap:10px}
+    .cover .title{display:block;position:relative}
+    .cover .title .huge{font-size:23vw;line-height:.86;letter-spacing:0}
+    .cover .title .huge .o{display:block}
+    .cover-logo{position:absolute;right:0;top:0;width:25vw;min-width:0;height:auto;border-radius:16px;box-shadow:5px 5px 0 var(--blue)}
+    .cover .kicker{font-size:18px}
+    .sticker{font-size:17px;padding:6px 12px}
+    .cover .lead{font-size:19px !important;line-height:1.28}
+    .cover .botrow{flex-direction:column;align-items:stretch;gap:14px}
+    .cover .btnrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .cover .btnrow .btn{font-size:19px;padding:12px 10px;text-align:center}
+    .cover .btnrow .btn.sub{grid-column:1/-1}
+    .cover .mono{font-size:19px}
+    .big{font-size:clamp(40px,12.5vw,56px)}
+    .lead{font-size:19px;line-height:1.4}
+    .slide .wrap{margin:0;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+    .stat-grid{flex:1;grid-auto-rows:1fr}
+    .stat .n{font-size:clamp(44px,15vw,64px)}
+    .stat .l{font-size:16px}
+    .rel-row .t{font-size:clamp(24px,7vw,30px)}
+    .rel-row{padding-block:14px}
+    .quote p{font-size:19px}
+    .tour-row .city{font-size:30px}
+    .cc .v{font-size:20px}
+  }
 </style>
 </head>
 <body>
@@ -556,7 +626,7 @@
         <div class="toprow" data-reveal>
           <span class="kicker hl-lime">Kit de prensa · 2026</span>
           <div class="stickwrap">
-            <span class="sticker o">Independiente</span>
+            <span class="sticker o">Weise Kinder</span>
             <span class="sticker r2">Puebla, MX</span>
           </div>
         </div>
@@ -574,6 +644,7 @@
           <div class="btnrow">
             <a class="btn fill" href="#" data-goto="2">Escuchar</a>
             <a class="btn" href="#" data-goto="7">Contacto</a>
+            <a class="btn sub" href="exclusivo/">★ Suscríbete</a>
           </div>
           <span class="mono">gayovaldez.com</span>
         </div>
@@ -599,7 +670,7 @@
         <div class="bio-grid">
           <div data-reveal>
             <p class="lead" style="margin-bottom:14px">
-              Gayo Valdez es un artista independiente de Puebla, México. Hace rap emocional, lofi y RnB en español: música que escribe para sí mismo, sin pedir permiso. Muy fresa para los cholos, muy cholo para los fresas.
+              Gayo Valdez es un artista de Puebla, México, del sello Weise Kinder. Hace rap emocional, lofi y RnB en español: música que escribe para sí mismo, sin pedir permiso. Muy fresa para los cholos, muy cholo para los fresas.
             </p>
             <p class="lead">
               Con más de 20 millones de streams, produce sus canciones en FL Studio y las comparte en Spotify, Apple Music, SoundCloud y YouTube, mientras su comunidad crece también en Instagram y TikTok. Hace música y escribe cosas.
@@ -609,7 +680,7 @@
               <span class="tag">Lofi</span>
               <span class="tag">RnB</span>
               <span class="tag">En español</span>
-              <span class="tag">Independiente</span>
+              <span class="tag">Sello Weise Kinder</span>
             </div>
           </div>
           <div class="bio-meta" data-reveal>
@@ -644,15 +715,15 @@
             <div class="mid hl-orange" style="margin-top:10px">Amarilla</div>
             <p class="mono" style="margin-top:5px;color:var(--white)">Su canción más conocida · rap emocional</p>
           </div>
-          <a class="btn fill" href="https://open.spotify.com/artist/0uCVN0ZSViQ4xVwJsDqfVo" target="_blank" rel="noopener">Escuchar en Spotify</a>
+          <a class="btn fill" href="https://open.spotify.com/search/Amarilla%20Gayo%20Valdez" target="_blank" rel="noopener">Escuchar Amarilla</a>
         </div>
 
         <div class="rel-list">
-          <div class="rel-row" data-reveal><span class="t">Gin</span><span class="ty">Canción</span><span class="yr"></span></div>
-          <div class="rel-row" data-reveal><span class="t">Effy</span><span class="ty">Canción</span><span class="yr"></span></div>
-          <div class="rel-row" data-reveal><span class="t">No puedo llorar</span><span class="ty">Canción</span><span class="yr"></span></div>
-          <div class="rel-row" data-reveal><span class="t">De mí para mí</span><span class="ty">Canción</span><span class="yr"></span></div>
-          <div class="rel-row" data-reveal><span class="t">Canciones para curar el alma</span><span class="ty">Álbum</span><span class="yr">2022</span></div>
+          <a class="rel-row" href="https://open.spotify.com/search/Gin%20Gayo%20Valdez" target="_blank" rel="noopener" data-reveal><span class="t">Gin</span><span class="ty">Canción</span><span class="yr"></span><i class="go">↗</i></a>
+          <a class="rel-row" href="https://open.spotify.com/search/Effy%20Gayo%20Valdez" target="_blank" rel="noopener" data-reveal><span class="t">Effy</span><span class="ty">Canción</span><span class="yr"></span><i class="go">↗</i></a>
+          <a class="rel-row" href="https://open.spotify.com/search/No%20puedo%20llorar%20Gayo%20Valdez" target="_blank" rel="noopener" data-reveal><span class="t">No puedo llorar</span><span class="ty">Canción</span><span class="yr"></span><i class="go">↗</i></a>
+          <a class="rel-row" href="https://open.spotify.com/search/De%20m%C3%AD%20para%20m%C3%AD%20Gayo%20Valdez" target="_blank" rel="noopener" data-reveal><span class="t">De mí para mí</span><span class="ty">Canción</span><span class="yr"></span><i class="go">↗</i></a>
+          <a class="rel-row" href="https://open.spotify.com/search/Canciones%20para%20curar%20el%20alma%20Gayo%20Valdez" target="_blank" rel="noopener" data-reveal><span class="t">Canciones para curar el alma</span><span class="ty">Álbum</span><span class="yr">2022</span><i class="go">↗</i></a>
         </div>
       </div>
     </div>
@@ -665,12 +736,12 @@
         <span class="kicker" data-reveal>04 / Números</span>
         <h2 class="big" data-reveal style="margin:6px 0 16px">Gayo en<br>números</h2>
         <div class="stat-grid" data-reveal>
-          <div class="stat"><span class="n">83K</span><span class="l">Oyentes mensuales en Spotify</span></div>
-          <div class="stat"><span class="n">+20M</span><span class="l">Streams totales</span></div>
-          <div class="stat"><span class="n">57K</span><span class="l">Suscriptores en YouTube</span></div>
-          <div class="stat"><span class="n">35K</span><span class="l">Seguidores en Spotify</span></div>
-          <div class="stat"><span class="n">24K</span><span class="l">Seguidores en Instagram</span></div>
-          <div class="stat"><span class="n">300+</span><span class="l">Videos en YouTube</span></div>
+          <a class="stat" href="https://open.spotify.com/artist/0uCVN0ZSViQ4xVwJsDqfVo" target="_blank" rel="noopener"><span class="n">83K</span><span class="l">Oyentes mensuales en Spotify</span></a>
+          <a class="stat" href="https://open.spotify.com/artist/0uCVN0ZSViQ4xVwJsDqfVo" target="_blank" rel="noopener"><span class="n">+20M</span><span class="l">Streams totales</span></a>
+          <a class="stat" href="https://www.youtube.com/@gayovaldez?sub_confirmation=1" target="_blank" rel="noopener"><span class="n">57K</span><span class="l">Suscriptores en YouTube</span></a>
+          <a class="stat" href="https://open.spotify.com/artist/0uCVN0ZSViQ4xVwJsDqfVo" target="_blank" rel="noopener"><span class="n">35K</span><span class="l">Seguidores en Spotify</span></a>
+          <a class="stat" href="https://www.instagram.com/itsgayobitch" target="_blank" rel="noopener"><span class="n">24K</span><span class="l">Seguidores en Instagram</span></a>
+          <a class="stat" href="https://www.youtube.com/@gayovaldez/videos" target="_blank" rel="noopener"><span class="n">300+</span><span class="l">Videos en YouTube</span></a>
         </div>
         <p class="mono" data-reveal style="margin-top:14px">Cifras de noviembre de 2026.</p>
       </div>
@@ -706,7 +777,7 @@
           </div>
         </div>
       </div>
-      <div class="marquee thin bleed" data-reveal style="margin-top:12px;border-bottom:none;background:var(--ink);color:var(--orange)">
+      <div class="marquee thin rtl bleed" data-reveal style="margin-top:12px;border-bottom:none;background:var(--ink);color:var(--orange)">
         <div class="track">
           <span>Spotify</span><span class="s">&#10022;</span><span>Apple Music</span><span class="s">&#10022;</span>
           <span>YouTube</span><span class="s">&#10022;</span><span>SoundCloud</span><span class="s">&#10022;</span><span>Instagram</span><span class="s">&#10022;</span><span>TikTok</span><span class="s">&#10022;</span>
@@ -780,7 +851,7 @@
           <div class="cc" data-reveal><div class="k">Shows y booking</div><div class="v"><a href="mailto:gayovaldez@gmail.com">gayovaldez@gmail.com</a></div></div>
           <div class="cc" data-reveal><div class="k">Colaboraciones</div><div class="v"><a href="mailto:gayovaldez@gmail.com">gayovaldez@gmail.com</a></div></div>
           <div class="cc" data-reveal><div class="k">Prensa</div><div class="v"><a href="mailto:gayovaldez@gmail.com">gayovaldez@gmail.com</a></div></div>
-          <div class="cc" data-reveal><div class="k">Sello</div><div class="v">Independiente</div></div>
+          <div class="cc" data-reveal><div class="k">Sello</div><div class="v">Weise Kinder</div></div>
         </div>
         <div class="socials" data-reveal>
           <a class="tag" href="https://www.instagram.com/itsgayobitch" target="_blank" rel="noopener">IG @itsgayobitch</a>
@@ -790,6 +861,7 @@
         </div>
         <div class="btnrow" data-reveal style="margin-top:18px">
           <a class="btn fill" href="mailto:gayovaldez@gmail.com">Escribir un correo</a>
+          <a class="btn sub" href="exclusivo/">★ Contenido exclusivo</a>
           <a class="btn" href="https://open.spotify.com/artist/0uCVN0ZSViQ4xVwJsDqfVo" target="_blank" rel="noopener">Escuchar en Spotify</a>
         </div>
       </div>
@@ -812,10 +884,10 @@
             <span class="tm">Pronto</span><span class="nm">Merch</span>
             <span class="ds">Ropa y objetos de Gayo Valdez.</span>
           </div>
-          <div class="promo soon" data-reveal>
-            <span class="tm">Pronto</span><span class="nm">Detrás de cámaras</span>
-            <span class="ds">Fotos y galerías del proceso, del estudio y de los shows.</span>
-          </div>
+          <a class="promo" href="exclusivo/" data-reveal>
+            <span class="tm">Ya disponible</span><span class="nm">Contenido exclusivo</span>
+            <span class="ds">Adelantos, detrás de cámaras y más. Suscríbete.</span>
+          </a>
         </div>
         <div class="btnrow" data-reveal style="margin-top:18px">
           <a class="btn fill" href="#" data-goto="0">Volver al inicio</a>
@@ -858,6 +930,7 @@
     <li><a href="#" data-goto="6"><span class="ix">07</span>Logo y colores</a></li>
     <li><a href="#" data-goto="7"><span class="ix">08</span>Contacto</a></li>
     <li><a href="#" data-goto="8"><span class="ix">09</span>Próximamente</a></li>
+    <li><a href="exclusivo/"><span class="ix">★</span>Contenido exclusivo</a></li>
   </ul>
   <div class="nav-foot">
     Flechas del teclado, deslizar o tocar. <a href="privacidad/">Privacidad</a> · <a href="terminos/">Condiciones</a>

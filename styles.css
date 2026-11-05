@@ -23,3 +23,11 @@ footer{padding-block:28px max(28px,env(safe-area-inset-bottom,0px));border-top:2
 footer nav{padding:0;gap:18px;display:flex}
 footer a{text-decoration:none}footer a:hover{color:var(--yellow)}
 .small{font-size:14px;color:var(--muted)}
+.ex .lead{font-size:clamp(20px,3vw,26px);line-height:1.35}
+.perks{padding-left:1.1em;margin:0 0 24px}.perks li{margin:6px 0}.perks li::marker{color:var(--yellow)}
+.btn-ex{font:700 17px var(--body);background:var(--yellow);color:#100E08;border:3px solid var(--yellow);padding:14px 26px;cursor:pointer;transition:transform .2s cubic-bezier(.3,1.6,.5,1),box-shadow .2s;margin-bottom:16px}
+.btn-ex:hover{transform:translate(-3px,-3px) rotate(-1deg);box-shadow:5px 5px 0 var(--blue)}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));margin:20px 0}
+.card{display:flex;flex-direction:column;gap:6px;padding:16px;border:3px solid var(--yellow);text-decoration:none;color:var(--fg);transition:transform .25s cubic-bezier(.3,1.6,.5,1),box-shadow .25s}
+.card:hover{transform:translate(-4px,-4px) rotate(-1deg);box-shadow:6px 6px 0 var(--blue)}
+.card small{color:var(--blue)}.card b{font:400 24px var(--display);text-transform:uppercase;color:var(--yellow)}.card span{color:var(--muted);font-size:14px}

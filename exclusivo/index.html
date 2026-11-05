@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&display=swap">
+<title>Contenido exclusivo · Gayo Valdez</title>
+<link rel="icon" href="../assets/favicon.png">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<nav class="wrap" aria-label="Principal"><a class="brand" href="../"><img src="../assets/logo-gayo.jpg" alt="" width="36" height="36"> GAYO VALDEZ</a><div class="links"><a href="../">Inicio</a></div></nav>
+<main class="wrap legal ex">
+  <h1>Contenido exclusivo</h1>
+  <section id="lock">
+    <p class="lead">Adelantos de canciones, detrás de cámaras y más, solo para quienes me apoyan.</p>
+    <ul class="perks">
+      <li>Adelantos antes de salir en Spotify</li>
+      <li>Detrás de cámaras del estudio y los shows</li>
+      <li>Contenido que no subo a ningún otro lado</li>
+    </ul>
+    <button class="btn-ex" id="subBtn" type="button">★ Suscríbete con Stripe</button>
+    <p class="muted" id="msg" hidden>La suscripción abre pronto. Vuelve en unos días.</p>
+    <p class="muted">¿Ya pagaste? Al terminar el pago Stripe te regresa aquí y se abre solo. En otro dispositivo, escríbeme a gayovaldez@gmail.com.</p>
+  </section>
+  <section id="open" hidden>
+    <p class="lead">Bienvenido. Esto es solo para ti.</p>
+    <div id="grid" class="grid"></div>
+    <p class="muted" id="empty" hidden>Estoy subiendo el primer contenido. Vuelve pronto.</p>
+  </section>
+</main>
+<footer class="wrap"><span>© 2026 Gayo Valdez · Puebla, México</span><nav aria-label="Legal"><a href="../privacidad/">Privacidad</a><a href="../terminos/">Condiciones</a></nav></footer>
+<script src="../assets/exclusivo.js"></script>
+<script>
+(function(){
+  var E=window.EXCL||{}, K="gv_tok", $=function(i){return document.getElementById(i)};
+  function show(open,msg){ $(open?"open":"lock").hidden=false; $(open?"lock":"open").hidden=true; if(msg){var m=$("msg");m.textContent=msg;m.hidden=false;} }
+  function call(path,body,tok){
+    return fetch(E.WORKER_URL+path,{method:"POST",headers:{"content-type":"application/json",authorization:"Bearer "+(tok||"")},body:JSON.stringify(body||{})})
+      .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j}})});
+  }
+  function render(items){
+    var g=$("grid"); g.textContent="";
+    $("empty").hidden=items.length>0;
+    items.forEach(function(it){
+      var a=document.createElement("a"); a.className="card"; a.href=it.url; a.target="_blank"; a.rel="noopener";
+      var t=document.createElement("small"); t.textContent=it.tipo||"";
+      var h=document.createElement("b"); h.textContent=it.titulo||"";
+      var d=document.createElement("span"); d.textContent=it.fecha||"";
+      a.append(t,h,d); g.appendChild(a);
+    });
+    show(true);
+  }
+  function tokGet(){try{return localStorage.getItem(K)}catch(e){return null}}
+  function tokSet(v){try{v?localStorage.setItem(K,v):localStorage.removeItem(K)}catch(e){}}
+  $("subBtn").onclick=function(){
+    if(E.STRIPE_LINK) location.href=E.STRIPE_LINK; else {$("msg").textContent="La suscripción abre pronto. Vuelve en unos días.";$("msg").hidden=false;}
+  };
+  show(false);
+  if(!E.WORKER_URL) return;
+  var sid=new URLSearchParams(location.search).get("session_id");
+  var start=sid ? call("/login",{session_id:sid}).then(function(r){ history.replaceState(null,"",location.pathname); if(r.ok) tokSet(r.j.token); else show(false,"No pude confirmar tu pago. Escríbeme a gayovaldez@gmail.com."); })
+                : Promise.resolve();
+  start.then(function(){
+    var t=tokGet(); if(!t) return;
+    return call("/contenido",{},t).then(function(r){
+      if(r.ok) render(r.j.items||[]); else { tokSet(null); show(false,"Tu suscripción no está activa. Puedes renovarla abajo."); }
+    });
+  }).catch(function(){ show(false,"No pude conectar. Intenta de nuevo en un momento."); });
+})();
+</script>
+</body>
+</html>
