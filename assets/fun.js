@@ -31,9 +31,9 @@
     "html.gv-night .gvn-tint{opacity:1}" +
     ".gv-fab{position:fixed;bottom:12px;z-index:2147483001;height:38px;min-width:38px;padding:0 12px;border:2px solid #FEC009;background:#100E08;color:#FEC009;font:700 14px 'Space Grotesk',system-ui,sans-serif;cursor:pointer;border-radius:0}" +
     ".gv-fab:hover{background:#FEC009;color:#100E08}.gv-fab:focus-visible{outline:3px solid #5AA5FF;outline-offset:2px}" +
-    "#gvFrase{left:12px}#gvNight{right:12px}" +
+    "#gvFrase,#gvNight{bottom:auto;right:8px;width:38px;padding:0;font-size:18px;line-height:1;opacity:.85}#gvFrase{top:calc(50% - 44px)}#gvNight{top:50%}.gv-fab:hover{opacity:1}" +
     "html.gv-night #gvNight{background:#5AA5FF;border-color:#5AA5FF;color:#100E08}" +
-    ".gv-toast{position:fixed;left:12px;bottom:60px;max-width:min(320px,calc(100vw - 24px));z-index:2147483001;background:#FEC009;color:#100E08;padding:12px 14px;font:700 16px/1.35 'Space Grotesk',system-ui,sans-serif;box-shadow:5px 5px 0 #0460CD;transform:translateY(8px);opacity:0;pointer-events:none;transition:.25s}" +
+    ".gv-toast{position:fixed;right:56px;top:calc(50% - 44px);max-width:min(320px,calc(100vw - 24px));z-index:2147483001;background:#FEC009;color:#100E08;padding:12px 14px;font:700 16px/1.35 'Space Grotesk',system-ui,sans-serif;box-shadow:5px 5px 0 #0460CD;transform:translateY(8px);opacity:0;pointer-events:none;transition:.25s}" +
     ".gv-toast.on{transform:none;opacity:1;pointer-events:auto}.gv-toast button{display:block;margin-top:8px;border:2px solid #100E08;background:transparent;font:700 13px 'Space Grotesk',sans-serif;padding:3px 10px;cursor:pointer;color:#100E08}" +
     ".gv-logo{transition:transform .12s ease-out;will-change:transform;cursor:pointer;-webkit-tap-highlight-color:transparent}" +
     ".gv-logo.jump{animation:gvjump .6s cubic-bezier(.3,1.6,.5,1)}@keyframes gvjump{0%{transform:translateY(0)}35%{transform:translateY(-26px) rotate(-6deg)}70%{transform:translateY(0) rotate(4deg)}100%{transform:none}}" +
@@ -134,11 +134,11 @@
   }
   var fi = -1;
   function frase() { var n; do { n = (Math.random() * FRASES.length) | 0; } while (n === fi && FRASES.length > 1); fi = n; toast("“" + FRASES[n] + "”", true); }
-  var bF = doc.createElement("button"); bF.id = "gvFrase"; bF.className = "gv-fab"; bF.type = "button"; bF.textContent = "✦ Frase"; bF.setAttribute("aria-label", "Frase aleatoria");
+  var bF = doc.createElement("button"); bF.id = "gvFrase"; bF.className = "gv-fab"; bF.type = "button"; bF.textContent = "✦"; bF.title = "Frase aleatoria"; bF.setAttribute("aria-label", "Frase aleatoria");
   bF.onclick = function (e) { e.stopPropagation(); frase(); };
   var bN = doc.createElement("button"); bN.id = "gvNight"; bN.className = "gv-fab"; bN.type = "button"; bN.setAttribute("aria-label", "Modo noche triste");
   function setNight(on, save) {
-    night = on; root.classList.toggle("gv-night", on); bN.textContent = on ? "☾ Noche triste: sí" : "☾ Noche triste";
+    night = on; root.classList.toggle("gv-night", on); bN.textContent = "☾"; bN.title = on ? "Noche triste: activada" : "Noche triste";
     bN.setAttribute("aria-pressed", on ? "true" : "false"); if (save) store("gv-night", on ? "1" : "0"); start();
   }
   bN.onclick = function (e) { e.stopPropagation(); setNight(!night, true); };
