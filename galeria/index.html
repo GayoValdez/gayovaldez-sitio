@@ -11,12 +11,12 @@
 <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-<nav class="wrap" aria-label="Principal"><a class="brand" href="../"><img src="../assets/logo-gayo.jpg" alt="" width="36" height="36"> GAYO VALDEZ</a><div class="links"><a href="../albumes/">Álbumes</a><a href="../galeria/">Galería</a><a href="../fotos/">Fotos</a><a href="../">Inicio</a></div></nav>
+<nav class="wrap" aria-label="Principal"><a class="brand" href="../"><img src="../assets/logo-gayo.jpg" alt="" width="36" height="36"> GAYO VALDEZ</a><div class="links"><a href="../albumes/">Álbumes</a><a href="../galeria/">Galería</a><a href="../fotos/">Fotos</a><a href="../juego/">Juegos</a><a href="../">Inicio</a></div></nav>
 <main class="wrap gx">
   <h1>Galería</h1>
   <p class="lead">Mis videos oficiales. Toca uno para verlo aquí.</p>
   <div class="bar">
-    <div class="chips" id="ord"><button class="on" data-o="new">Recientes</button><button data-o="top">Más vistos</button></div>
+    <div class="chips" id="ord"><button class="on" data-o="top">Más vistos</button><button data-o="new">Recientes</button></div>
     <a class="yt" href="https://www.youtube.com/@gayovaldez?sub_confirmation=1" target="_blank" rel="noopener">Suscribirme en YouTube</a>
   </div>
   <div id="gv" class="vgrid"></div>
@@ -28,7 +28,7 @@
 <script src="videos.js"></script>
 <script>
 (function(){
-  var V=(window.VIDEOS||[]).filter(function(v){return v.k==="V"}),kind="",ord="new",shown=0,PER=24,$=function(i){return document.getElementById(i)};
+  var V=(window.VIDEOS||[]).filter(function(v){return v.k==="V"}),kind="",ord="top",shown=0,PER=24,$=function(i){return document.getElementById(i)};
   function list(){var a=V.filter(function(v){return !kind||v.k===kind});a.sort(function(x,y){return ord==="top"?y.v-x.v:y.ts-x.ts});return a}
   function fmt(n){return n>=1e6?(n/1e6).toFixed(1)+" M":n>=1e3?(n/1e3).toFixed(n>=1e4?0:1)+" mil":String(n)}
   function draw(reset){
@@ -44,7 +44,7 @@
   }
   function openV(v){
     var s=$("stage");s.className="stage"+(v.k==="S"?" short":"");s.textContent="";
-    var f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+v.id+"?autoplay=1&rel=0";
+    var f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+v.id+"?autoplay=1&rel=0&playsinline=1&modestbranding=1";
     f.allow="autoplay; encrypted-media; picture-in-picture";f.allowFullscreen=true;f.title=v.t;s.appendChild(f);
     $("lbl").href="https://www.youtube.com/watch?v="+v.id;$("lb").hidden=false;document.body.style.overflow="hidden";
   }

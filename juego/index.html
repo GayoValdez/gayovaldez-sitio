@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<script src="../assets/player.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&display=swap">
+<title>Juegos · Gayo Valdez</title>
+<link rel="icon" href="../assets/favicon.png">
+<link rel="stylesheet" href="../styles.css">
+<style>
+.tabs{display:flex;gap:10px;margin:0 0 22px;flex-wrap:wrap}
+.tabs button{font:700 16px var(--body);padding:10px 18px;background:transparent;color:var(--blue);border:2px solid var(--blue);cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--blue);color:#100E08}
+.panel[hidden]{display:none}
+.q h2{font:400 clamp(24px,5vw,34px)/1.1 var(--display);color:var(--yellow);margin:0 0 6px;text-transform:uppercase}
+.q small{color:var(--muted)}
+.opts{display:grid;gap:10px;margin-top:16px;max-width:620px}
+.opts button{text-align:left;font:500 17px var(--body);padding:14px 16px;background:var(--surface);color:var(--fg);border:2px solid var(--line);cursor:pointer}
+.opts button:hover,.opts button:focus-visible{border-color:var(--yellow)}
+.res{display:grid;grid-template-columns:minmax(0,220px) 1fr;gap:22px;align-items:center;max-width:720px}
+.res img{width:100%;aspect-ratio:1;object-fit:cover;border:3px solid var(--yellow);box-shadow:6px 6px 0 #0460CD}
+.res h2{font:400 clamp(30px,6vw,46px)/1 var(--display);color:var(--yellow);margin:0 0 8px;text-transform:uppercase}
+.btn2{display:inline-block;margin:6px 8px 0 0;padding:10px 16px;font:700 16px var(--body);text-decoration:none;border:2px solid var(--blue);color:var(--blue);background:transparent;cursor:pointer}
+.btn2.fill{background:var(--yellow);border-color:var(--yellow);color:#100E08}
+@media(max-width:560px){.res{grid-template-columns:1fr}.res img{max-width:200px}}
+#gwrap{max-width:420px;margin:0 auto;touch-action:none}
+#gc{width:100%;height:auto;aspect-ratio:3/4;background:#0b0905;border:3px solid var(--yellow);display:block;touch-action:none}
+.hud{display:flex;justify-content:space-between;font:700 16px var(--body);margin:0 0 8px}
+</style>
+</head>
+<body>
+<nav class="wrap" aria-label="Principal"><a class="brand" href="../"><img src="../assets/logo-gayo.jpg" alt="" width="36" height="36"> GAYO VALDEZ</a><div class="links"><a href="../albumes/">Álbumes</a><a href="../galeria/">Galería</a><a href="../fotos/">Fotos</a><a href="../juego/">Juegos</a><a href="../">Inicio</a></div></nav>
+<main class="wrap gx">
+  <h1>Juegos</h1>
+  <p class="lead">Un quiz y un juego rápido. Dale play a la música y juega.</p>
+  <div class="tabs" role="tablist">
+    <button role="tab" id="tq" aria-selected="true" aria-controls="pq">¿Qué álbum eres hoy?</button>
+    <button role="tab" id="tg" aria-selected="false" aria-controls="pg">Atrapa las notas</button>
+  </div>
+
+  <section id="pq" class="panel" role="tabpanel" aria-labelledby="tq"><div id="quiz"></div></section>
+
+  <section id="pg" class="panel" role="tabpanel" aria-labelledby="tg" hidden>
+    <div id="gwrap">
+      <div class="hud"><span>Puntos: <b id="gs">0</b></span><span>Récord: <b id="gb">0</b></span><span>Vidas: <b id="gl">3</b></span></div>
+      <canvas id="gc" width="360" height="480" aria-label="Juego: mueve el personaje para atrapar notas y esquivar corazones rotos"></canvas>
+      <p style="color:var(--muted);font-size:15px;margin:10px 0">Mueve el dedo, el mouse o las flechas. Atrapa ♪ y esquiva 💔.</p>
+      <button class="btn2 fill" id="gp" type="button">Jugar</button>
+    </div>
+  </section>
+</main>
+<script>
+(function(){
+  "use strict";
+  var $=function(i){return document.getElementById(i)};
+  function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){}return null}
+  /* pestañas */
+  function tab(w){var q=w==="q";$("tq").setAttribute("aria-selected",q);$("tg").setAttribute("aria-selected",!q);$("pq").hidden=!q;$("pg").hidden=q;if(q)stop()}
+  $("tq").onclick=function(){tab("q")};$("tg").onclick=function(){tab("g")};
+
+  /* ---------- QUIZ ---------- */
+  var COV="https://i.scdn.co/image/ab67616d0000b273";
+  var AL={
+    odio:{n:"Por Odio al Amor",id:"2j05pbje3DPbrlC5xvu1Iv",h:"8fabdd8882035cd9f23a45c3",t:"Hoy el corazón pide verdad. Sientes fuerte y lo dices sin adornos."},
+    post:{n:"Post Depresión",id:"3ttv0h0BzTk8eg3yQ8WuXn",h:"3374432cae613861a59d983e",t:"Vienes saliendo de algo pesado y ya ves un poco de luz. Estás sanando."},
+    cura:{n:"Canciones para Curar el Alma",id:"1tEM8ssiPazmN7bCroUL00",h:"14c2a6426a9f22141e4c3a4b",t:"Necesitas ternura. Hoy toca cuidarte y escuchar algo que abrace."},
+    clar:{n:"Claridad",id:"4vE4DvXmBT3N9I0lSv5snI",h:"92d47d95a250f74a629e56e5",t:"Tienes la cabeza despejada y las cosas claras. Buen día para decidir."},
+    osc:{n:"Oscuridad",id:"2OVEJnKxtWHKkXrzLxo2jX",h:"6f83140cec7ef01010cd737e",t:"Estás en modo noche: pensativo, intenso, de los que se quedan despiertos."},
+    amar:{n:"Amar y Ya",id:"67qxuH9kNPboW3ZzWmt1PD",h:"e95de80a9eaf869e36d61b01",t:"Hoy el amor manda: ilusión, nervios y ganas de sentirlo todo."}
+  };
+  var Q=[
+    {q:"¿Cómo amaneciste?",o:[["Con ganas de llorar un rato","osc"],["Con paz, por fin","clar"],["Con el corazón acelerado","amar"],["Cansado, pero aquí sigo","post"]]},
+    {q:"Es de noche, ¿qué haces?",o:[["Veo el techo y pienso en todo","osc"],["Escribo lo que siento","odio"],["Música bajita y a dormir","cura"],["Mando ese mensaje que no debía","amar"]]},
+    {q:"Elige un clima",o:[["Lluvia fuerte","osc"],["Cielo recién despejado","clar"],["Atardecer amarillo","post"],["Neblina tranquila","cura"]]},
+    {q:"¿Qué necesitas hoy?",o:[["Soltar el enojo","odio"],["Un abrazo","cura"],["Una nueva oportunidad","post"],["Alguien que me quiera bien","amar"]]},
+    {q:"Tu mood en una palabra",o:[["Claridad","clar"],["Honestidad","odio"],["Nostalgia","osc"],["Esperanza","post"]]}
+  ];
+  var qi=0,sc={};
+  function qr(){var box=$("quiz");box.innerHTML="";
+    if(qi>=Q.length)return res();
+    var d=Q[qi],w=document.createElement("div");w.className="q";
+    w.innerHTML="<small>Pregunta "+(qi+1)+" de "+Q.length+"</small><h2></h2><div class=opts></div>";
+    w.querySelector("h2").textContent=d.q;
+    d.o.forEach(function(o){var b=document.createElement("button");b.type="button";b.textContent=o[0];
+      b.onclick=function(){sc[o[1]]=(sc[o[1]]||0)+1;qi++;qr()};w.querySelector(".opts").appendChild(b)});
+    box.appendChild(w)}
+  function res(){var k=Object.keys(sc).sort(function(a,b){return sc[b]-sc[a]})[0],a=AL[k],box=$("quiz");
+    box.innerHTML="<div class=res><img alt=''><div><small style='color:var(--muted)'>Hoy eres…</small><h2></h2><p></p><a class='btn2 fill' target=_blank rel=noopener>Escuchar en Spotify</a><button type=button class=btn2 id=rq>Repetir</button></div></div>";
+    var im=box.querySelector("img");im.src=COV+a.h;im.alt="Portada de "+a.n;
+    box.querySelector("h2").textContent=a.n;box.querySelector("p").textContent=a.t;
+    box.querySelector("a").href="https://open.spotify.com/album/"+a.id;
+    $("rq").onclick=function(){qi=0;sc={};qr()};
+    try{window.GVFX&&GVFX.confetti()}catch(e){}}
+  qr();
+
+  /* ---------- JUEGO ---------- */
+  var c=$("gc"),x=c.getContext("2d"),W=c.width,H=c.height,img=new Image();img.src="../assets/logo-gayo.jpg";
+  var run=false,raf=0,px=W/2,tx=W/2,items=[],score=0,lives=3,t0=0,spawn=0,best=+ls("gv-best")||0,keys={};
+  $("gb").textContent=best;
+  function pos(e){var r=c.getBoundingClientRect(),p=e.touches?e.touches[0]:e;tx=(p.clientX-r.left)*W/r.width}
+  c.addEventListener("pointermove",function(e){pos(e)});c.addEventListener("pointerdown",function(e){pos(e)});
+  c.addEventListener("touchmove",function(e){pos(e);e.preventDefault()},{passive:false});
+  addEventListener("keydown",function(e){if(e.key==="ArrowLeft"||e.key==="ArrowRight"){keys[e.key]=1;if(run)e.preventDefault()}});
+  addEventListener("keyup",function(e){delete keys[e.key]});
+  function draw(){x.clearRect(0,0,W,H);x.fillStyle="#0b0905";x.fillRect(0,0,W,H);
+    x.textAlign="center";x.textBaseline="middle";
+    items.forEach(function(i){x.font=i.bad?"28px serif":"700 34px sans-serif";x.fillStyle=i.bad?"#fff":"#FEC009";x.fillText(i.bad?"💔":"♪",i.x,i.y)});
+    var s=54;x.save();x.beginPath();x.arc(px,H-44,s/2,0,6.283);x.clip();
+    if(img.complete&&img.naturalWidth)x.drawImage(img,px-s/2,H-44-s/2,s,s);else{x.fillStyle="#FEC009";x.fill()}x.restore();
+    x.lineWidth=3;x.strokeStyle="#FEC009";x.beginPath();x.arc(px,H-44,s/2,0,6.283);x.stroke()}
+  function loop(t){if(!run)return;var dt=Math.min(2,(t-t0)/16.7);t0=t;
+    if(keys.ArrowLeft)tx-=7*dt;if(keys.ArrowRight)tx+=7*dt;tx=Math.max(24,Math.min(W-24,tx));px+=(tx-px)*Math.min(1,.3*dt);
+    var lvl=1+score/12;spawn-=dt;
+    if(spawn<=0){items.push({x:24+Math.random()*(W-48),y:-20,v:(2+Math.random()*1.5)*Math.min(2.2,.8+lvl*.15),bad:Math.random()<Math.min(.45,.2+lvl*.02)});spawn=Math.max(16,44-lvl*2)}
+    for(var i=items.length-1;i>=0;i--){var it=items[i];it.y+=it.v*dt;
+      if(it.y>H-70&&it.y<H-18&&Math.abs(it.x-px)<32){items.splice(i,1);
+        if(it.bad){lives--;$("gl").textContent=lives;try{window.GVFX&&GVFX.floatEmoji(innerWidth/2,innerHeight/2,["💔"],3)}catch(e){}if(lives<=0)return over()}
+        else{score++;$("gs").textContent=score}continue}
+      if(it.y>H+30)items.splice(i,1)}
+    draw();raf=requestAnimationFrame(loop)}
+  function over(){run=false;cancelAnimationFrame(raf);draw();
+    if(score>best){best=score;ls("gv-best",best);$("gb").textContent=best;try{window.GVFX&&GVFX.confetti()}catch(e){}}
+    x.fillStyle="rgba(0,0,0,.7)";x.fillRect(0,0,W,H);x.fillStyle="#FEC009";x.textAlign="center";x.font="700 34px sans-serif";x.fillText("Fin del juego",W/2,H/2-10);
+    x.font="700 20px sans-serif";x.fillStyle="#fff";x.fillText(score+" puntos",W/2,H/2+26);$("gp").textContent="Jugar otra vez"}
+  function startG(){items=[];score=0;lives=3;spawn=10;px=tx=W/2;$("gs").textContent=0;$("gl").textContent=3;run=true;t0=performance.now();$("gp").textContent="Reiniciar";cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)}
+  function stop(){run=false;cancelAnimationFrame(raf)}
+  $("gp").onclick=startG;draw();
+})();
+</script>
+</body>
+</html>

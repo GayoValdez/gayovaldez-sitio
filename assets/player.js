@@ -12,6 +12,11 @@
       if (!a || a.target) return;
       try { var u = new URL(a.href, location.href); if (/^https?:$/.test(u.protocol) && u.origin !== location.origin) a.target = "_top"; } catch (er) {}
     }, true);
+    // efectos divertidos
+    try {
+      var me = document.currentScript, src = me && me.src ? me.src : "";
+      if (src) { var fs = document.createElement("script"); fs.src = src.replace(/player\.js.*$/, "fun.js"); fs.defer = true; document.head.appendChild(fs); }
+    } catch (e) {}
     return;
   }
   // Página abierta sola: mandarla al marco con la música

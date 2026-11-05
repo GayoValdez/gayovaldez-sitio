@@ -17,6 +17,7 @@
     ".gvp button:hover,.gvp button:focus-visible{background:#FEC009;color:#100E08;transform:translateY(-2px) rotate(-4deg)}" +
     ".gvp button.on{background:#FEC009;color:#100E08}" +
     ".gvp .gvp-lb{align-self:center;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}" +
+    ".gvp .disc{align-self:center;width:24px;height:24px;border-radius:50%;flex:none;background:radial-gradient(circle,#FEC009 0 14%,#100E08 15% 22%,#2a2618 23% 100%);border:1px solid #5AA5FF;box-shadow:inset 0 0 0 3px #1b1810,inset 0 0 0 4px #3a3320}.gvp.go .disc{animation:gvspin 2.4s linear infinite}@keyframes gvspin{to{transform:rotate(360deg)}}" +
     ".gvp .eq{align-self:center;display:inline-flex;gap:2px;align-items:flex-end;height:14px}.gvp .eq i{width:3px;background:#5AA5FF;height:3px}" +
     ".gvp.go .eq i{animation:gveq .8s ease-in-out infinite}.gvp.go .eq i:nth-child(2){animation-delay:-.3s}.gvp.go .eq i:nth-child(3){animation-delay:-.6s}" +
     "@keyframes gveq{0%,100%{height:3px}50%{height:14px}}" +
@@ -32,21 +33,21 @@
 
   var live = document.createElement("div");
   live.className = "gvl";
-  live.innerHTML = '<i></i><span>Personas escuchando en Spotify en este momento:</span><b id="gvlN">0</b>';
+  live.innerHTML = '<i></i><span>Escuchando en Spotify ahora:</span><b id="gvlN">0</b>';
   document.body.appendChild(live);
   var gBase = 50, gLast = -1, gT = 0;
   function tick(){
-    if (Date.now() - gT >= 60000) {
+    if (Date.now() - gT >= 300000) {
       var k; do { k = Math.floor(Math.random() * 10); } while (k === gLast);
       gLast = k; gBase = 50 + k * 10; gT = Date.now();
     }
     document.getElementById("gvlN").textContent = gBase + Math.floor(Math.random() * 11);
   }
-  tick(); setInterval(tick, 5000);
+  tick(); setInterval(tick, 30000);
 
   var bar = document.createElement("div");
   bar.className = "gvp";
-  bar.innerHTML = '<button type="button" id="gvpPlay" aria-label="Reproducir">&#9654;</button><button type="button" id="gvpStop" aria-label="Detener">&#9632;</button><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="gvp-lb" id="gvpLb">Toca para escuchar</span>';
+  bar.innerHTML = '<button type="button" id="gvpPlay" aria-label="Reproducir">&#9654;</button><button type="button" id="gvpStop" aria-label="Detener">&#9632;</button><span class="disc" aria-hidden="true"></span><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="gvp-lb" id="gvpLb">Toca para escuchar</span>';
   document.body.appendChild(bar);
   var q = function (s) { return bar.querySelector(s); };
 

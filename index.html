@@ -618,6 +618,8 @@
   .cover .btnrow{display:grid !important;grid-template-columns:repeat(3,minmax(0,max-content));gap:12px 14px;justify-content:start}
   .cover .btnrow .btn{text-align:center;white-space:nowrap}
   @media (max-width:640px){.cover .btnrow{grid-template-columns:repeat(3,1fr);gap:9px}.cover .btnrow .btn{padding:10px 4px !important;font-size:14px !important}}
+  .cover .btnrow .btn.sub{grid-column:auto !important;width:auto !important;flex:none !important}
+  @media (max-width:640px){.cover .btnrow .btn{width:100% !important;box-sizing:border-box}}
 </style>
 </head>
 <body>
@@ -899,6 +901,7 @@
           <a class="promo" href="albumes/" data-reveal><span class="tm">Ya disponible</span><span class="nm">Álbumes</span><span class="ds">Mis álbumes por año, directo a Spotify.</span></a>
           <a class="promo" href="galeria/" data-reveal><span class="tm">Ya disponible</span><span class="nm">Galería</span><span class="ds">Todos mis videos de YouTube.</span></a>
           <a class="promo" href="fotos/" data-reveal><span class="tm">Ya disponible</span><span class="nm">Fotos</span><span class="ds">Mis fotos favoritas.</span></a>
+          <a class="promo" href="juego/" data-reveal><span class="tm">Nuevo</span><span class="nm">Juegos</span><span class="ds">Quiz: ¿qué álbum eres hoy? y atrapa las notas.</span></a>
           <div class="promo soon" data-reveal>
             <span class="tm">Pronto</span><span class="nm">Conciertos</span>
             <span class="ds">Fechas, ciudades y boletos cuando haya shows.</span>
@@ -956,6 +959,7 @@
     <li><a href="albumes/"><span class="ix">●</span>Álbumes</a></li>
     <li><a href="galeria/"><span class="ix">▶</span>Galería</a></li>
     <li><a href="fotos/"><span class="ix">◼</span>Fotos</a></li>
+    <li><a href="juego/"><span class="ix">♪</span>Juegos</a></li>
     <li><a href="exclusivo/"><span class="ix">★</span>Contenido exclusivo</a></li>
   </ul>
   <div class="nav-foot">
